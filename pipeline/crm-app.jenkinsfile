@@ -1,0 +1,60 @@
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh 'pip install pytest'
+        git (
+          url: 'https://github.com/sloopstash/kickstart-flask',
+          branch: 'master'
+        )
+        sh 'pip install -r requirements.txt'
+      }
+    }
+    stage('Test') {
+      steps {
+        sh '~/.local/bin/pytest --junitxml=reports.xml script/test/main.py'
+      }
+      post {
+        always {
+          junit 'reports.xml'
+        }
+        success {
+          input 'The build/test of CRM App is successful. Do you want to deploy on staging environment?'
+        }
+      }
+    }
+    stage('Deploy/Staging') {
+      steps {
+        ansiblePlaybook (
+          credentialsId: '1000',
+          disableHostKeyChecking: true, 
+          inventory: '/opt/kickstart-ansible/inventory/dev',
+          playbook: '/opt/kickstart-ansible/playbook/redis.yml',
+          tags: 'setup, configure, start'
+        )
+        ansiblePlaybook (
+          credentialsId: '1000',
+          disableHostKeyChecking: true, 
+          inventory: '/opt/kickstart-ansible/inventory/dev',
+          playbook: '/opt/kickstart-ansible/playbook/app.yml',
+          tags: 'setup, update, configure, start',
+          limit: 'crm-stack-app-1'
+        )
+      }
+      post {
+        always {
+          emailext (
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+            subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+          )
+        }
+        success {
+          cleanWs()
+          input 'Congrats! The build/test of CRM App is successful. You can proceed with deployment on production environment?'
+        }
+      }
+    }
+  }
+}
