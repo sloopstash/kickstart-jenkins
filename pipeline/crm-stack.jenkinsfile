@@ -20,7 +20,7 @@ pipeline {
           junit 'reports.xml'
         }
         success {
-          input 'The build/test of CRM App is successful. Do you want to deploy on staging environment?'
+          input 'Congrats! The build/test of CRM App is successful. Do you want to start deployment on staging environment?'
         }
       }
     }
@@ -47,12 +47,13 @@ pipeline {
           emailext (
             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
             recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+            to: $DEFAULT_RECIPIENTS,
             subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
           )
         }
         success {
           cleanWs()
-          input 'Congrats! The build/test of CRM App is successful. You can proceed with deployment on production environment?'
+          input 'Congrats! The deployment on staging environment is successful. Do you want to start deployment on production environment?'
         }
       }
     }
