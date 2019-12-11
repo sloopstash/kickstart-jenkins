@@ -29,14 +29,14 @@ pipeline {
         ansiblePlaybook (
           credentialsId: '1000',
           disableHostKeyChecking: true, 
-          inventory: '/opt/kickstart-ansible/inventory/dev',
+          inventory: '/opt/kickstart-ansible/inventory/stg',
           playbook: '/opt/kickstart-ansible/playbook/redis.yml',
           tags: 'setup, configure, start'
         )
         ansiblePlaybook (
           credentialsId: '1000',
           disableHostKeyChecking: true, 
-          inventory: '/opt/kickstart-ansible/inventory/dev',
+          inventory: '/opt/kickstart-ansible/inventory/stg',
           playbook: '/opt/kickstart-ansible/playbook/app.yml',
           tags: 'setup, update, configure, start',
           limit: 'crm-stack-app-1'
