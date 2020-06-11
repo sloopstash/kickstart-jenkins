@@ -1,0 +1,18 @@
+version: '3'
+services:
+  jenkins_agent:
+    image: sloopstash/jenkins:v1
+    command: "/usr/bin/supervisord -c /etc/supervisord.conf"
+    hostname: jenkins-agent
+    ports:
+      - "3001:22"
+    volumes:
+      - /opt/kickstart-jenkins/supervisor/conf/main.conf:/etc/supervisord.conf
+      - /opt/kickstart-jenkins/supervisor/conf/sshd.ini:/etc/supervisord.d/sshd.ini
+    networks:
+      jenkins-net:
+        ipv4_address: 100.5.1.10
+networks:
+  jenkins-net:
+    external:
+      name: jenkins-net
