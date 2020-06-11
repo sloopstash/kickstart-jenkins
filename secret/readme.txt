@@ -1,1 +1,1 @@
-1. place ansible-node ssh keys here.
+1. place jenkins-agent-node ssh keys here.
