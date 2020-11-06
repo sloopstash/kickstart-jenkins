@@ -2,10 +2,12 @@ version: '3'
 services:
   jenkins:
     image: sloopstash/jenkins:v1
+    container_name: jenkins-node
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"
+    cont
     hostname: jenkins-node
     ports:
-      - "3001:22"
+      - "2261:22"
     volumes:
       - /opt/kickstart-jenkins/supervisor/conf/main.conf:/etc/supervisord.conf
       - /opt/kickstart-jenkins/supervisor/conf/sshd.ini:/etc/supervisord.d/sshd.ini
