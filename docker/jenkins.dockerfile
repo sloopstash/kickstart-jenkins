@@ -1,7 +1,7 @@
 # use base image.
 FROM sloopstash/amazonlinux:v1
 
-# install openssh server and passwd.
+# install openssh server, passwd, git, and java.
 RUN yum install -y openssh-server passwd git java-1.8.0-openjdk
 
 # configure openssh server.
@@ -17,7 +17,7 @@ RUN set -x \
   && touch /root/.ssh/config \
   && echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null" >> /root/.ssh/config \
   && chmod 400 /root/.ssh/config
-ADD secret/jenkins-agent-node.pub /root/.ssh/authorized_keys
+ADD secret/node.pub /root/.ssh/authorized_keys
 
 # cleanup history.
 RUN history -c

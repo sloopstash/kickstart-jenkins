@@ -1,1 +1,1 @@
-1. place jenkins-agent-node ssh keys here.
+- place jenkins cli ssh keys here.
