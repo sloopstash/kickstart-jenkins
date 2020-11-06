@@ -4,7 +4,6 @@ services:
     image: sloopstash/jenkins:v1
     container_name: jenkins-node
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"
-    cont
     hostname: jenkins-node
     ports:
       - "2261:22"
