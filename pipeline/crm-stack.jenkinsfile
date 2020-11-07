@@ -1,8 +1,17 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'slave'
+    } 
+  }
+  environment {
+    ANSIBLE_CONFIG = '/opt/kickstart-ansible/ansible.cfg'
+  }
   stages {
     stage('Build') {
       steps {
+        sh 'easy_install pip'
+        sh 'pip install ansible==2.8.2'
         sh 'pip install pytest'
         git (
           url: 'https://github.com/sloopstash/kickstart-flask',
@@ -13,7 +22,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh '~/.local/bin/pytest --junitxml=reports.xml script/test/main.py'
+        sh '/usr/bin/pytest --junitxml=reports.xml script/test/main.py'
       }
       post {
         always {
@@ -31,6 +40,7 @@ pipeline {
           disableHostKeyChecking: true, 
           inventory: '/opt/kickstart-ansible/inventory/stg',
           playbook: '/opt/kickstart-ansible/playbook/redis.yml',
+          // extras: '-e {"redis":{"version":"4.0.8"}}',
           tags: 'setup, configure, start'
         )
         ansiblePlaybook (
@@ -38,6 +48,7 @@ pipeline {
           disableHostKeyChecking: true, 
           inventory: '/opt/kickstart-ansible/inventory/stg',
           playbook: '/opt/kickstart-ansible/playbook/app.yml',
+          // extras: '-e {"app":{"environment":"stg"}}',
           tags: 'setup, update, configure, start',
           limit: 'crm-stack-app-1'
         )

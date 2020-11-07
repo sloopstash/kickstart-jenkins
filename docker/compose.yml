@@ -10,6 +10,7 @@ services:
     volumes:
       - /opt/kickstart-jenkins/supervisor/conf/main.conf:/etc/supervisord.conf
       - /opt/kickstart-jenkins/supervisor/conf/sshd.ini:/etc/supervisord.d/sshd.ini
+      - /opt/kickstart-ansible:/opt/kickstart-ansible
     networks:
       jenkins-net:
         ipv4_address: 100.5.1.10
