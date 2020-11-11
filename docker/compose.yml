@@ -1,19 +1,36 @@
 version: '3'
 services:
-  jenkins:
+  jenkins-master:
     image: sloopstash/jenkins:v1
-    container_name: jenkins-node
+    container_name: jenkins-master
     command: "/usr/bin/supervisord -c /etc/supervisord.conf"
-    hostname: jenkins-node
+    hostname: jenkins-master
     ports:
-      - "2261:22"
+      - "8080:8080"
+    volumes:
+      - /opt/kickstart-jenkins/supervisor/conf/main.conf:/etc/supervisord.conf
+      - /opt/kickstart-jenkins/supervisor/conf/sshd.ini:/etc/supervisord.d/sshd.ini
+      - /opt/kickstart-jenkins/supervisor/conf/jenkins.ini:/etc/supervisord.d/jenkins.ini
+      - /opt/kickstart-jenkins/jenkins/data:/opt/jenkins/data
+      - /opt/kickstart-jenkins/jenkins/log:/opt/jenkins/log
+      - /opt/kickstart-jenkins/jenkins/system:/opt/jenkins/system
+    networks:
+      jenkins-net:
+        ipv4_address: 100.5.1.10
+  jenkins-slave:
+    image: sloopstash/jenkins:v1
+    container_name: jenkins-slave
+    command: "/usr/bin/supervisord -c /etc/supervisord.conf"
+    hostname: jenkins-slave
     volumes:
       - /opt/kickstart-jenkins/supervisor/conf/main.conf:/etc/supervisord.conf
       - /opt/kickstart-jenkins/supervisor/conf/sshd.ini:/etc/supervisord.d/sshd.ini
       - /opt/kickstart-ansible:/opt/kickstart-ansible
+    depends_on:
+      - jenkins-master
     networks:
       jenkins-net:
-        ipv4_address: 100.5.1.10
+        ipv4_address: 100.5.1.20
 networks:
   jenkins-net:
     external:
