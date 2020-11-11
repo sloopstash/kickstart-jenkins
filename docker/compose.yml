@@ -11,6 +11,7 @@ services:
       - /opt/kickstart-jenkins/supervisor/conf/main.conf:/etc/supervisord.conf
       - /opt/kickstart-jenkins/supervisor/conf/sshd.ini:/etc/supervisord.d/sshd.ini
       - /opt/kickstart-jenkins/supervisor/conf/jenkins.ini:/etc/supervisord.d/jenkins.ini
+      - /opt/kickstart-jenkins/jenkins/conf/security-limits.conf:/etc/security/limits.d/10-jenkins-defaults.conf
       - /opt/kickstart-jenkins/jenkins/data:/opt/jenkins/data
       - /opt/kickstart-jenkins/jenkins/log:/opt/jenkins/log
       - /opt/kickstart-jenkins/jenkins/system:/opt/jenkins/system
