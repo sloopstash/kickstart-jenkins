@@ -1,16 +1,16 @@
-# use base image.
+# Docker image to use.
 FROM sloopstash/amazonlinux:v1
 
-# install openssh server, passwd, and git.
+# Install OpenSSH server and Git.
 RUN yum install -y openssh-server passwd git
 
-# configure openssh server.
+# Configure OpenSSH server.
 RUN set -x \
   && mkdir /var/run/sshd \
   && ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' \
   && sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 
-# configure openssh user.
+# Configure OpenSSH user.
 RUN set -x \
   && mkdir /root/.ssh \
   && touch /root/.ssh/authorized_keys \
@@ -19,20 +19,20 @@ RUN set -x \
   && chmod 400 /root/.ssh/config
 ADD secret/node.pub /root/.ssh/authorized_keys
 
-# switch work directory.
+# Switch work directory.
 WORKDIR /tmp
 
-# install oracle java development kit.
+# Install Oracle JDK.
 COPY jdk-8u131-linux-x64.rpm ./
 RUN set -x \
   && rpm -Uvh jdk-8u131-linux-x64.rpm \
   && rm -rf jdk-8u131-linux-x64.rpm
 
-# create user named jenkins.
+# Create system user for Jenkins.
 RUN set -x \
   && useradd -m -s /bin/bash -d /usr/local/lib/jenkins jenkins
 
-# install jenkins.
+# Install Jenkins.
 COPY jenkins.war ./
 RUN set -x \
   && cp jenkins.war /usr/local/lib/jenkins/ \
@@ -46,8 +46,8 @@ RUN set -x \
   && touch /opt/jenkins/system/process.pid \
   && chown -R jenkins:jenkins /opt/jenkins
 
-# switch work directory.
+# Switch work directory.
 WORKDIR /
 
-# cleanup history.
+# Cleanup history.
 RUN history -c

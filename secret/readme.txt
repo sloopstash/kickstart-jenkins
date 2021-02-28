@@ -1,1 +1,1 @@
-- place jenkins cli ssh keys here.
+- Place Jenkins CLI SSH keys here.
