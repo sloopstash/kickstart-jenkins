@@ -50,7 +50,7 @@ pipeline {
           playbook: '/opt/kickstart-ansible/playbook/app.yml',
           // extras: '-e {"app":{"environment":"stg"}}',
           tags: 'setup, update, configure, start',
-          limit: 'crm-stack-app-1'
+          limit: 'crm-stg-app-1'
         )
       }
       post {
