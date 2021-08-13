@@ -12,10 +12,10 @@ services:
       - ../supervisor/conf/main.conf:/etc/supervisord.conf
       - ../supervisor/conf/sshd.ini:/etc/supervisord.d/sshd.ini
       - ../supervisor/conf/jenkins.ini:/etc/supervisord.d/jenkins.ini
-      - ../jenkins/conf/security-limits.conf:/etc/security/limits.d/10-jenkins-defaults.conf
-      - ../jenkins/data:/opt/jenkins/data
-      - ../jenkins/log:/opt/jenkins/log
-      - ../jenkins/system:/opt/jenkins/system
+      - ../conf/security-limits.conf:/etc/security/limits.d/10-jenkins-defaults.conf
+      - ../data:/opt/jenkins/data
+      - ../log:/opt/jenkins/log
+      - ../system:/opt/jenkins/system
     networks:
       jenkins-net:
         ipv4_address: 100.5.1.10
