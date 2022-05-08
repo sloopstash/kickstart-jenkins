@@ -63,8 +63,10 @@ pipeline {
           )
         }
         success {
-          cleanWs(deleteDirs: true,
-                  disableDeferredWipeout: true)
+          cleanWs(
+            deleteDirs: true,
+            disableDeferredWipeout: true
+          )
           input 'Congrats! The deployment on staging environment is successful. Do you want to start deployment on production environment?'
         }
       }
