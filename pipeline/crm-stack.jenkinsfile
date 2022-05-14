@@ -36,16 +36,16 @@ pipeline {
     stage('Deploy/Staging') {
       steps {
         ansiblePlaybook (
-          credentialsId: '1000',
-          disableHostKeyChecking: true, 
+          credentialsId: 'ansible-node-ssh',
+          disableHostKeyChecking: true,
           inventory: '/opt/kickstart-ansible/inventory/stg',
           playbook: '/opt/kickstart-ansible/playbook/redis.yml',
           // extras: '-e {"redis":{"version":"4.0.8"}}',
           tags: 'setup, configure, start'
         )
         ansiblePlaybook (
-          credentialsId: '1000',
-          disableHostKeyChecking: true, 
+          credentialsId: 'ansible-node-ssh',
+          disableHostKeyChecking: true,
           inventory: '/opt/kickstart-ansible/inventory/stg',
           playbook: '/opt/kickstart-ansible/playbook/app.yml',
           // extras: '-e {"app":{"environment":"stg"}}',
