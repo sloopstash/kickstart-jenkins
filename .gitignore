@@ -1,9 +1,4 @@
-downloads/jdk-*
-downloads/*.rpm
-downloads/*.deb
-downloads/*.tar.gz
-downloads/*.zip
-downloads/*.jar
 secret/*.pem
 secret/*.pub
+secret/node*
 tmp/*

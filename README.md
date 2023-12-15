@@ -1,2 +1,2 @@
 # Kickstart Jenkins
-The ultimate aim of this Jenkins starter-kit is to help you run build/test of sample CRM app using Jenkins freestyle and pipeline projects.
+Our Jenkins starter-kit repository contains Jenkins pipeline templates and other configurations needed to implement CI/CD workflow for workloads using Jenkins.
