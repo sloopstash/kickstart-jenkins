@@ -2,7 +2,7 @@ pipeline {
   agent any
   parameters {
     choice(
-      name:'test_environment',choices:['qaa','qab'],description:'Testing environment'
+      name:'test_environment',choices:['qab','qaa'],description:'Testing environment'
     )
   }
   environment {
