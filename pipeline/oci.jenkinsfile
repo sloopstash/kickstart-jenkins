@@ -1,0 +1,53 @@
+pipeline {
+  agent any
+  environment {
+    OCI_REGISTRY_ENDPOINT='https://registry.hub.docker.com'
+    OCI_REGISTRY_NAMESPACE='<OCI_REGISTRY_NAMESPACE>'
+  }
+  stages {
+    stage('CI: Setup starter-kits from GitHub') {
+      steps {
+        sh(
+          script:'git clone https://github.com/sloopstash/kickstart-docker.git kickstart-docker',
+          returnStatus:true
+        )
+      }
+    }
+    stage('CI/CD: Build and push OCI images') {
+      steps {
+        dir('kickstart-docker') {
+          script {
+            def oci_images = ['redis:4.0.9','nginx:1.24.0']
+            for(int i=0;i<oci_images.size();++i) {
+              def (name,version) = oci_images[i].split(':')
+              def image_name = "${OCI_REGISTRY_NAMESPACE}/${name}:v${version}"
+              def dockerfile_path = "image/${name}/${version}/amazon-linux-2.dockerfile"
+              def context_dir = "image/${name}/${version}/context"
+              def image = docker.build(
+                image_name,"-f ${dockerfile_path} ${context_dir}"
+              )
+              docker.withRegistry(OCI_REGISTRY_ENDPOINT,'oci-registry-auth') {
+                image.push()
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  post {
+    always {
+      sh 'sudo docker logout'
+    }
+    success {
+      cleanWs(
+        deleteDirs:true,
+        disableDeferredWipeout:true
+      )
+      echo 'OCI images have been built and pushed successfully!'
+    }
+    failure {
+      echo 'Failed to build or push one or more OCI images.'
+    }
+  }
+}
