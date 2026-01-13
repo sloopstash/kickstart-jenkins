@@ -1,9 +1,8 @@
-# Kickstart Jenkins
-Integrate popular tools such as Docker, Kubernetes, Ansible, Chef, Packer, and Terraform with Jenkins to create large-scale CI/CD pipelines or workflows.
+# SloopStash Jenkins kit
 
 
 ## Getting started
-Please refer to the [wiki](https://github.com/sloopstash/kickstart-jenkins/wiki) for detailed instructions on how to get started with our Jenkins starter-kit.
+Please refer to the [documentation](https://sloopstash.com/documentation/toolkit/ci-cd/jenkins/index.html) for detailed instructions on how to get started with SloopStash Jenkins kit.
 
 
 ## Get support

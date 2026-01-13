@@ -5,7 +5,7 @@ pipeline {
     OCI_REGISTRY_NAMESPACE='<OCI_REGISTRY_NAMESPACE>'
   }
   stages {
-    stage('CI: Setup starter-kits from GitHub') {
+    stage('CI: Setup SloopStash Docker kit from GitHub') {
       steps {
         sh(
           script:'git clone https://github.com/sloopstash/kickstart-docker.git kickstart-docker',
